@@ -26,7 +26,23 @@ int partition(int *array, int start, int end )
 {
 	int pivotIndex,i,j,pivotValue,temp,latestIndex;
 	pivotValue = array[end];
-	
+	int low = start - 1;
+	for ( i = start; i <= end - 1; i ++ )
+	{
+		if( array[i] <= pivotValue )
+		{
+			low ++;
+			temp = array[i];
+			array[i] = array[low];
+			array[low] = temp;
+		}
+	}
+	pivotIndex = low + 1;
+	temp = array[pivotIndex];
+	array[pivotIndex] = array[end];
+	array[end] = temp;
+//	printArray(array,end-start+1,"The array after partitioning is");
+	return pivotIndex;	
 	
 }
 void quickSort(int * array, int start, int end)
@@ -64,7 +80,10 @@ int main()
 	array = (int * ) calloc ( numberOfElements, sizeof(int));
 	createArray(array,0,numberOfElements - 1 );
 	printArray(array,numberOfElements,"The array created randomly is");
-
+	
+//	i = partition(array,0,numberOfElements - 1 );
+//	printf("Pivot is %d\n",i);
+	
 	quickSort(array,0,numberOfElements - 1);
 	printArray(array,numberOfElements,"The array after sorting with quicksort algorithm");
 }
