@@ -14,20 +14,61 @@ void printStrings(char **strings, int numberOfLetters, int numberOfStrings, char
 		printf("\n");
 	}
 }
-void countSort(char ** strings,int numberOfLetters,int numberOfStings,int digit)
+int* countDistinctLetters(char **strings, int digit, int numberOfStrings)
 {
-	int *count,numberOfdistinctLetters;
-	numberOfdistinctLetters = countDistinctLetters();
+	int i,count,*distinctLetters;
+	distinctLetters = (int * ) calloc ( 26, sizeof(int));
+	for ( i = 0; i < numberOfStrings; i ++ )
+	{
+		distinctLetters[strings[i][digit] - 65] ++;
+	}
+	for (  i = 0,count = 0 ;i  <numberOfStrings; i ++ )
+	{
+		if(distinctLetters[strings[digit][i] - 65] !=0 )	
+			count ++;
+	}
+	return distinctLetters;
+	
+}
+void countSort(char ** strings,int numberOfLetters,int numberOfStrings,int digit,char **output)
+{
+	int *count,i,numberOfDistinctLetters,*distinctLetters;
+	distinctLetters = (int * ) calloc ( 26,sizeof(int));
+	distinctLetters =  countDistinctLetters(strings,digit,numberOfStrings);
 	char *lateralString;
 	lateralString = (char*)malloc(numberOfStrings*sizeof(int));
+	numberOfDistinctLetters = 0;
+	for ( i = 0; i < 26; i ++ )
+	{
+		if(distinctLetters[i] != 0)
+		{
+			numberOfDistinctLetters ++;
+		}   
+	}
+	
+	
+//	printf("The numberOfDistinctLetters for digit %d is : %d\n",digit,numberOfDistinctLetters);
+//	printf("For digit %d, the frequency is:\n",digit);
+//	for ( i = 0; i < 26; i ++ )
+//	{
+//		printf("%c : %d\n", 65 + i, distinctLetters[i] );
+//	}
 }
 void radixSort1(char **strings, int numberOfLetters, int numberOfStrings)
 {
-	int digit,j;
+	int digit,i;
+	char **output;
+	output = (char**) calloc(numberOfStrings,sizeof(char*));
+        for ( i = 0 ;i < numberOfStrings ; i ++ )
+        {
+                output[i] = (char*) calloc ( numberOfLetters, sizeof(char));
+        }
+	
 	for ( digit = numberOfLetters-1; digit >= 0 ; digit -- )
 	{	
-		countSort(strings,numberOfLetters,numberOfStrings,digit);
+		countSort(strings,numberOfLetters,numberOfStrings,digit,output);
 	}
+	
 }
 int main()
 {
